@@ -13,20 +13,15 @@ body {
 .top-title { font-size: 18px; font-weight: 600; color: #111; margin-bottom: 3px; }
 .top-sub   { font-size: 12px; color: #999; margin-bottom: 1.25rem; }
 
-/* upload */
-.upload-zone {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  background: #fff; border: 1.5px dashed #c8e6d8;
-  border-radius: 10px; padding: 11px 16px; margin-bottom: 1.25rem;
+/* status bar */
+.status-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: #fff; border: 1px solid #e2e2dc;
+  border-radius: 10px; padding: 10px 16px; margin-bottom: 1.25rem;
 }
-.upload-zone label { font-size: 12px; font-weight: 500; color: #555; }
-.upload-btn {
-  font-size: 12px; font-weight: 500; padding: 6px 16px;
-  border-radius: 99px; border: none; background: #1D9E75; color: #fff; cursor: pointer;
-}
-.upload-btn:hover { background: #0F6E56; }
-#file-input { display: none; }
-.upload-status { font-size: 11px; color: #888; font-style: italic; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; background: #1D9E75; flex-shrink: 0; }
+.status-text { font-size: 12px; color: #555; }
+.status-text strong { color: #111; font-weight: 600; }
 
 /* empty / loading */
 .empty-state {
@@ -155,16 +150,10 @@ tr:hover td { background: #fafaf8; }
 <div class="top-title">Dashboard de acomodos automáticos — Interwarehouse transfer</div>
 <div class="top-sub">Visibilidad del proceso de transferencia entre bodegas adyacentes</div>
 
-<!-- Upload manual (para actualizar) -->
-<div class="upload-zone">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
-    <path d="M8 2v8M5 5l3-3 3 3M2 11v1.5A1.5 1.5 0 003.5 14h9a1.5 1.5 0 001.5-1.5V11"
-      stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <label>Actualizar datos manualmente</label>
-  <button class="upload-btn" onclick="document.getElementById('file-input').click()">Subir CSV</button>
-  <input type="file" id="file-input" accept=".csv">
-  <span class="upload-status" id="upload-status"></span>
+<!-- Status bar — se actualiza automáticamente al cargar el CSV -->
+<div class="status-bar">
+  <div class="status-dot"></div>
+  <span class="status-text" id="status-text">Cargando datos...</span>
 </div>
 
 <!-- Loading / empty state -->
@@ -355,14 +344,17 @@ tr:hover td { background: #fafaf8; }
     };
   }
 
-  function loadRows(rows, source) {
+  function loadRows(rows) {
     RAW = rows.map(mapRow);
     populateSelects();
     fil = [...RAW];
     document.getElementById('empty-state').style.display = 'none';
     document.getElementById('dashboard-content').style.display = 'block';
-    const now = new Date().toLocaleString('es-MX', { dateStyle:'short', timeStyle:'short' });
-    document.getElementById('last-update').textContent = `Última actualización: ${now} — ${source}`;
+    const now = new Date();
+    const fecha = now.toLocaleDateString('es-MX', { day:'numeric', month:'long', year:'numeric' });
+    const hora  = now.toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+    document.getElementById('status-text').innerHTML =
+      `Actualizado al <strong>${fecha}</strong> a las <strong>${hora}</strong> — <strong>${RAW.length} registros</strong> cargados`;
     clearFilter();
   }
 
@@ -500,35 +492,11 @@ tr:hover td { background: #fafaf8; }
     })
     .then(text => {
       const rows = parseCSV(text);
-      loadRows(rows, 'GitHub');
-      document.getElementById('upload-status').textContent = `${rows.length} registros cargados desde GitHub`;
-      document.getElementById('upload-status').style.color = '#0F6E56';
+      loadRows(rows);
     })
     .catch(() => {
-      showError('No se encontró <strong>InterWarehouse Report.csv</strong> en el repositorio.<br>Sube el archivo a GitHub o usa el botón de arriba para cargarlo manualmente.');
-      document.getElementById('upload-status').textContent = 'Sube el CSV manualmente para ver los datos';
+      showError('No se encontró <strong>InterWarehouse Report.csv</strong> en el repositorio.<br>Verifica que el archivo esté subido a GitHub con el nombre correcto.');
     });
-
-  // ── Carga manual (sobreescribe los datos de GitHub) ──
-  document.getElementById('file-input').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-      try {
-        const rows = parseCSV(ev.target.result);
-        if (!rows.length) throw new Error('Sin filas');
-        loadRows(rows, file.name);
-        document.getElementById('upload-status').textContent = `${rows.length} registros cargados — ${file.name}`;
-        document.getElementById('upload-status').style.color = '#0F6E56';
-        document.getElementById('empty-state').style.display = 'none';
-      } catch(err) {
-        document.getElementById('upload-status').textContent = 'Error al leer el archivo. Verifica que sea un CSV válido.';
-        document.getElementById('upload-status').style.color = '#A32D2D';
-      }
-    };
-    reader.readAsText(file);
-  });
 </script>
 </body>
 </html>
