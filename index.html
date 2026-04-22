@@ -5,79 +5,156 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard — Acomodos Automáticos Interwarehouse</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;background:#f4f4f0;color:#1a1a1a;padding:2rem}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  background: #f4f4f0;
+  color: #1a1a1a;
+  padding: 2rem;
+}
 
-.top-title{font-size:18px;font-weight:600;color:#111;margin-bottom:3px}
-.top-sub{font-size:12px;color:#999;margin-bottom:1.25rem}
+.top-title { font-size: 18px; font-weight: 600; color: #111; margin-bottom: 3px; }
+.top-sub   { font-size: 12px; color: #999; margin-bottom: 1.25rem; }
 
-/* upload */
-.upload-zone{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px dashed #c8e6d8;border-radius:10px;padding:10px 16px;margin-bottom:1.25rem;flex-wrap:wrap}
-.upload-zone label{font-size:11px;font-weight:500;color:#555}
-.upload-btn{font-size:12px;font-weight:500;padding:6px 16px;border-radius:99px;border:none;background:#1D9E75;color:#fff;cursor:pointer}
-.upload-btn:hover{background:#0F6E56}
-#file-input{display:none}
-.upload-status{font-size:11px;color:#888;font-style:italic}
+/* ── Upload ── */
+.upload-zone {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  background: #fff; border: 1.5px dashed #c8e6d8;
+  border-radius: 10px; padding: 11px 16px; margin-bottom: 1.25rem;
+}
+.upload-zone label { font-size: 12px; font-weight: 500; color: #555; }
+.upload-btn {
+  font-size: 12px; font-weight: 500; padding: 6px 16px;
+  border-radius: 99px; border: none; background: #1D9E75; color: #fff; cursor: pointer;
+}
+.upload-btn:hover { background: #0F6E56; }
+#file-input { display: none; }
+.upload-status { font-size: 11px; color: #888; font-style: italic; }
 
-/* filters */
-.filters-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#fff;border:1px solid #e2e2dc;border-radius:10px;padding:10px 16px;margin-bottom:8px}
-.fg{display:flex;align-items:center;gap:6px}
-.fg label{font-size:11px;font-weight:500;color:#777;white-space:nowrap}
-.fg input[type=date],.fg select{font-size:11px;padding:5px 8px;border:1px solid #ddd;border-radius:6px;background:#fafaf8;color:#1a1a1a;outline:none;height:28px}
-.fsep{width:1px;height:22px;background:#e2e2dc;flex-shrink:0}
-.btn-ap{font-size:11px;font-weight:500;padding:0 14px;height:28px;border-radius:99px;border:none;background:#1D9E75;color:#fff;cursor:pointer}
-.btn-ap:hover{background:#0F6E56}
-.btn-cl{font-size:11px;padding:0 12px;height:28px;border-radius:99px;border:1px solid #ddd;background:transparent;color:#888;cursor:pointer}
-.btn-cl:hover{background:#f0f0ea}
+/* ── Empty state ── */
+.empty-state {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 4rem 2rem; text-align: center;
+  background: #fff; border: 1px solid #e2e2dc; border-radius: 12px;
+  margin-top: 1rem;
+}
+.empty-state-icon {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #E1F5EE; display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.empty-state h3 { font-size: 15px; font-weight: 600; color: #222; margin-bottom: 6px; }
+.empty-state p  { font-size: 12px; color: #888; max-width: 320px; line-height: 1.6; }
 
-/* chips */
-.chips{display:flex;gap:5px;flex-wrap:wrap;min-height:4px;margin-bottom:1rem}
-.chip{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:3px 10px;border-radius:99px;background:#E6F1FB;color:#185FA5;border:1px solid #B5D4F4}
-.chip-x{cursor:pointer;opacity:.6;font-size:14px;line-height:1}
-.chip-x:hover{opacity:1}
+/* ── Filters ── */
+.filters-bar {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  background: #fff; border: 1px solid #e2e2dc;
+  border-radius: 10px; padding: 10px 16px; margin-bottom: 8px;
+}
+.fg { display: flex; align-items: center; gap: 6px; }
+.fg label { font-size: 11px; font-weight: 500; color: #777; white-space: nowrap; }
+.fg input[type=date], .fg select {
+  font-size: 11px; padding: 5px 8px;
+  border: 1px solid #ddd; border-radius: 6px;
+  background: #fafaf8; color: #1a1a1a; outline: none; height: 28px;
+}
+.fsep { width: 1px; height: 22px; background: #e2e2dc; flex-shrink: 0; }
+.btn-ap {
+  font-size: 11px; font-weight: 500; padding: 0 14px; height: 28px;
+  border-radius: 99px; border: none; background: #1D9E75; color: #fff; cursor: pointer;
+}
+.btn-ap:hover { background: #0F6E56; }
+.btn-cl {
+  font-size: 11px; padding: 0 12px; height: 28px;
+  border-radius: 99px; border: 1px solid #ddd;
+  background: transparent; color: #888; cursor: pointer;
+}
+.btn-cl:hover { background: #f0f0ea; }
 
-/* kpis */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.75rem}
-.kpi{background:#fff;border:1px solid #e2e2dc;border-radius:12px;padding:14px 16px 16px;position:relative;overflow:hidden}
-.ka{position:absolute;top:0;left:0;right:0;height:3px;border-radius:12px 12px 0 0}
-.kl{font-size:11px;color:#999;margin-bottom:6px;margin-top:6px;line-height:1.35}
-.kv{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums;color:#111}
-.kv.blue{color:#185FA5}.kv.teal{color:#0F6E56}.kv.amber{color:#854F0B}
-.kv.red{color:#A32D2D}.kv.purple{color:#534AB7}.kv.sm{font-size:16px;font-weight:500}
+/* ── Chips ── */
+.chips { display: flex; gap: 5px; flex-wrap: wrap; min-height: 4px; margin-bottom: 1rem; }
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; padding: 3px 10px; border-radius: 99px;
+  background: #E6F1FB; color: #185FA5; border: 1px solid #B5D4F4;
+}
+.chip-x { cursor: pointer; opacity: .6; font-size: 14px; line-height: 1; }
+.chip-x:hover { opacity: 1; }
 
-.divider{border:none;border-top:1px solid #e2e2dc;margin:1.5rem 0}
-.section-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.slabel{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#aaa}
-.rcount{font-size:11px;color:#bbb}
+/* ── KPI Grid ── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 10px; margin-bottom: 1.75rem;
+}
+.kpi {
+  background: #fff; border: 1px solid #e2e2dc;
+  border-radius: 12px; padding: 14px 16px 16px;
+  position: relative; overflow: hidden;
+}
+.ka { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
+.kl { font-size: 11px; color: #999; margin-bottom: 6px; margin-top: 6px; line-height: 1.35; }
+.kv { font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; color: #111; }
+.kv.blue   { color: #185FA5; }
+.kv.teal   { color: #0F6E56; }
+.kv.amber  { color: #854F0B; }
+.kv.purple { color: #534AB7; }
+.kv.sm     { font-size: 17px; font-weight: 500; }
 
-/* table */
-.table-wrap{overflow-x:auto;border:1px solid #e2e2dc;border-radius:12px;background:#fff}
-table{width:100%;border-collapse:collapse;font-size:11px}
-th{font-size:10px;font-weight:500;color:#888;text-align:left;padding:9px 11px;border-bottom:1px solid #e2e2dc;white-space:nowrap;background:#f8f8f4}
-td{padding:8px 11px;border-bottom:1px solid #f0f0ea;color:#1a1a1a;white-space:nowrap;vertical-align:middle;font-variant-numeric:tabular-nums}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:#fafaf8}
+/* ── Divider ── */
+.divider { border: none; border-top: 1px solid #e2e2dc; margin: 1.5rem 0; }
 
-/* badges */
-.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:500;padding:2px 8px;border-radius:99px}
-.b-done{background:#E1F5EE;color:#085041}
-.b-failed{background:#FCEBEB;color:#791F1F}
-.b-progress{background:#FAEEDA;color:#633806}
-.b-cancelled{background:#F1EFE8;color:#444441}
-.b-creating{background:#E6F1FB;color:#185FA5}
-.dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.dot-done{background:#0F6E56}.dot-failed{background:#A32D2D}
-.dot-progress{background:#854F0B}.dot-cancelled{background:#888780}.dot-creating{background:#185FA5}
+/* ── Section row ── */
+.section-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.slabel { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #aaa; }
+.rcount { font-size: 11px; color: #bbb; }
 
-/* bar */
-.bar-wrap{display:inline-flex;align-items:center;gap:6px}
-.bar-bg{width:52px;height:4px;background:#e8e8e2;border-radius:99px;overflow:hidden}
-.bar-fill{height:100%;border-radius:99px}
-.f-teal{background:#1D9E75}.f-amber{background:#BA7517}.f-red{background:#E24B4A}
+/* ── Table ── */
+.table-wrap { overflow-x: auto; border: 1px solid #e2e2dc; border-radius: 12px; background: #fff; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  font-size: 11px; font-weight: 500; color: #888;
+  text-align: left; padding: 10px 12px;
+  border-bottom: 1px solid #e2e2dc; white-space: nowrap;
+  background: #f8f8f4;
+}
+th.num { text-align: right; }
+th.center { text-align: center; }
+td {
+  padding: 9px 12px; border-bottom: 1px solid #f0f0ea;
+  color: #1a1a1a; vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+td.num    { text-align: right; }
+td.center { text-align: center; }
+td.muted  { color: #aaa; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #fafaf8; }
 
-.mono{font-family:'SF Mono','Fira Code',monospace}
-.muted{color:#aaa}
-.empty-msg{text-align:center;padding:28px;color:#bbb;font-size:12px}
+/* ── Badges ── */
+.badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 99px; }
+.b-done      { background: #E1F5EE; color: #085041; }
+.b-failed    { background: #FCEBEB; color: #791F1F; }
+.b-progress  { background: #FAEEDA; color: #633806; }
+.b-cancelled { background: #F1EFE8; color: #444441; }
+.b-creating  { background: #E6F1FB; color: #185FA5; }
+.dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.dot-done      { background: #0F6E56; }
+.dot-failed    { background: #A32D2D; }
+.dot-progress  { background: #854F0B; }
+.dot-cancelled { background: #888780; }
+.dot-creating  { background: #185FA5; }
+
+/* ── Progress bar ── */
+.bar-wrap { display: inline-flex; align-items: center; gap: 7px; }
+.bar-bg   { width: 56px; height: 5px; background: #e8e8e2; border-radius: 99px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 99px; }
+.f-teal  { background: #1D9E75; }
+.f-amber { background: #BA7517; }
+.f-red   { background: #E24B4A; }
 </style>
 </head>
 <body>
@@ -85,74 +162,103 @@ tr:hover td{background:#fafaf8}
 <div class="top-title">Dashboard de acomodos automáticos — Interwarehouse transfer</div>
 <div class="top-sub">Visibilidad del proceso de transferencia entre bodegas adyacentes</div>
 
-<!-- upload -->
+<!-- Upload -->
 <div class="upload-zone">
-  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0"><path d="M8 2v8M5 5l3-3 3 3M2 11v1.5A1.5 1.5 0 003.5 14h9a1.5 1.5 0 001.5-1.5V11" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
+    <path d="M8 2v8M5 5l3-3 3 3M2 11v1.5A1.5 1.5 0 003.5 14h9a1.5 1.5 0 001.5-1.5V11" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
   <label>Actualizar datos desde CSV</label>
   <button class="upload-btn" onclick="document.getElementById('file-input').click()">Subir archivo</button>
   <input type="file" id="file-input" accept=".csv">
-  <span class="upload-status" id="upload-status">Mostrando datos de ejemplo — sube tu CSV para actualizar</span>
+  <span class="upload-status" id="upload-status">Ningún archivo cargado — sube el CSV para ver la información</span>
 </div>
 
-<!-- filters -->
-<div class="filters-bar">
-  <div class="fg"><label>Desde</label><input type="date" id="df"></div>
-  <div class="fsep"></div>
-  <div class="fg"><label>Hasta</label><input type="date" id="dt"></div>
-  <div class="fsep"></div>
-  <div class="fg"><label>WH Origen</label><select id="f-orig"><option value="">Todas</option></select></div>
-  <div class="fsep"></div>
-  <div class="fg"><label>WH Destino</label><select id="f-dest"><option value="">Todas</option></select></div>
-  <div class="fsep"></div>
-  <div class="fg"><label>Estado</label>
-    <select id="f-est">
-      <option value="">Todos</option>
-      <option>In progress</option>
-      <option>Failed</option>
-      <option>Cancelled</option>
-      <option>Creating</option>
-      <option>Done</option>
-    </select>
+<!-- Empty state (visible al inicio) -->
+<div class="empty-state" id="empty-state">
+  <div class="empty-state-icon">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <path d="M11 2v7M8 6l3-3 3 3M3 13v4a2 2 0 002 2h12a2 2 0 002-2v-4" stroke="#0F6E56" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M7 10H3M19 10h-4" stroke="#0F6E56" stroke-width="1.8" stroke-linecap="round"/>
+    </svg>
   </div>
-  <div class="fsep"></div>
-  <button class="btn-ap" onclick="applyFilter()">Aplicar</button>
-  <button class="btn-cl" onclick="clearFilter()">Limpiar</button>
+  <h3>Sube el archivo CSV para comenzar</h3>
+  <p>Haz clic en <strong>"Subir archivo"</strong> para cargar el reporte de acomodos. El dashboard se actualizará automáticamente con la información del archivo.</p>
 </div>
-<div class="chips" id="chips"></div>
 
-<!-- kpis -->
-<div class="kpi-grid" id="kpi-grid"></div>
+<!-- Dashboard (oculto hasta que se cargue CSV) -->
+<div id="dashboard-content" style="display:none">
 
-<hr class="divider">
+  <!-- Filters -->
+  <div class="filters-bar">
+    <div class="fg"><label>Desde</label><input type="date" id="df"></div>
+    <div class="fsep"></div>
+    <div class="fg"><label>Hasta</label><input type="date" id="dt"></div>
+    <div class="fsep"></div>
+    <div class="fg">
+      <label>WH Origen</label>
+      <select id="f-orig"><option value="">Todas</option></select>
+    </div>
+    <div class="fsep"></div>
+    <div class="fg">
+      <label>WH Destino</label>
+      <select id="f-dest"><option value="">Todas</option></select>
+    </div>
+    <div class="fsep"></div>
+    <div class="fg">
+      <label>Estado</label>
+      <select id="f-est">
+        <option value="">Todos</option>
+        <option>In progress</option>
+        <option>Failed</option>
+        <option>Cancelled</option>
+        <option>Creating</option>
+        <option>Done</option>
+      </select>
+    </div>
+    <div class="fsep"></div>
+    <button class="btn-ap" onclick="applyFilter()">Aplicar</button>
+    <button class="btn-cl" onclick="clearFilter()">Limpiar</button>
+  </div>
+  <div class="chips" id="chips"></div>
 
-<!-- table -->
-<div class="section-row">
-  <span class="slabel">Resumen por arrangement</span>
-  <span class="rcount" id="rc"></span>
-</div>
-<div class="table-wrap">
-  <table>
-    <thead><tr>
-      <th>MR ID</th>
-      <th>Arrangement</th>
-      <th>WH Origen</th>
-      <th>WH Destino</th>
-      <th style="text-align:center">Total TJ</th>
-      <th style="text-align:center">TJ cerradas</th>
-      <th style="text-align:center">TJ pendientes</th>
-      <th>Avance</th>
-      <th style="text-align:right">Qty total</th>
-      <th style="text-align:right">Items delivered</th>
-      <th>Estado</th>
-      <th>MR creación</th>
-      <th>MR requerida</th>
-      <th>ARR in progress</th>
-      <th>ARR done</th>
-      <th>T. total (h)</th>
-      <th>T. operativo (h)</th>
-    </tr></thead>
-    <tbody id="tb"></tbody>
-  </table>
+  <!-- KPIs -->
+  <div class="kpi-grid" id="kpi-grid"></div>
+
+  <hr class="divider">
+
+  <!-- Table -->
+  <div class="section-row">
+    <span class="slabel">Resumen por arrangement</span>
+    <span class="rcount" id="rc"></span>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="center">#</th>
+          <th>Material Request</th>
+          <th>Shipping Core</th>
+          <th>Arrangement</th>
+          <th>WH Origen</th>
+          <th>WH Destino</th>
+          <th class="center">Total TJ</th>
+          <th class="center">TJ cerradas</th>
+          <th class="center">TJ pendientes</th>
+          <th class="num">Qty total</th>
+          <th class="num">Items delivered</th>
+          <th>Avance</th>
+          <th>Estado</th>
+          <th>MR creación</th>
+          <th>MR requerida</th>
+          <th>ARR in progress</th>
+          <th>ARR done</th>
+          <th class="num">T. total MR (h)</th>
+          <th class="num">T. operativo (h)</th>
+        </tr>
+      </thead>
+      <tbody id="tb"></tbody>
+    </table>
+  </div>
 </div>
 
 <script>
@@ -160,55 +266,52 @@ let RAW = [];
 let fil = [];
 
 const KPI_DEFS = [
-  {id:'arr',  label:'Total arrangements',     cls:'blue',   accent:'#378ADD'},
-  {id:'prog', label:'In progress',            cls:'amber',  accent:'#BA7517'},
-  {id:'fail', label:'Failed',                 cls:'red',    accent:'#E24B4A'},
-  {id:'canc', label:'Cancelled',              cls:'',       accent:'#B4B2A9'},
-  {id:'tj',   label:'Total transfer jobs',    cls:'purple', accent:'#7F77DD'},
-  {id:'tjp',  label:'TJ pendientes',          cls:'amber',  accent:'#EF9F27'},
-  {id:'tt',   label:'T. prom. completo (h)',  cls:'sm',     accent:'#5DCAA5'},
-  {id:'to',   label:'T. prom. operativo (h)', cls:'sm',     accent:'#5DCAA5'},
+  { id:'arr',  label:'Total arrangements',      cls:'blue',   accent:'#378ADD' },
+  { id:'tj',   label:'Total transfer jobs',      cls:'',       accent:'#B4B2A9' },
+  { id:'comp', label:'TJs completados',          cls:'teal',   accent:'#1D9E75' },
+  { id:'pend', label:'TJs pendientes',           cls:'amber',  accent:'#BA7517' },
+  { id:'pct',  label:'% avance de TJs',          cls:'purple', accent:'#7F77DD' },
+  { id:'tt',   label:'Tiempo prom. completo (h)',cls:'sm',     accent:'#5DCAA5' },
+  { id:'to',   label:'Tiempo prom. operativo (h)',cls:'sm',    accent:'#5DCAA5' },
 ];
 
 function badge(st) {
   const map = {
-    'Done':        ['b-done','dot-done'],
-    'In progress': ['b-progress','dot-progress'],
-    'Failed':      ['b-failed','dot-failed'],
+    'Done':        ['b-done',     'dot-done'],
+    'In progress': ['b-progress', 'dot-progress'],
+    'Failed':      ['b-failed',   'dot-failed'],
     'Cancelled':   ['b-cancelled','dot-cancelled'],
-    'Creating':    ['b-creating','dot-creating'],
+    'Creating':    ['b-creating', 'dot-creating'],
   };
-  const [bc, dc] = map[st] || ['b-cancelled','dot-cancelled'];
+  const [bc, dc] = map[st] || ['b-cancelled', 'dot-cancelled'];
   return `<span class="badge ${bc}"><span class="dot ${dc}"></span>${st}</span>`;
 }
 
 function bar(p) {
-  if (p === '' || p === null || p === undefined) return '<span class="muted">—</span>';
-  const pct = Math.round(parseFloat(p) * 100);
+  if (p === '' || p === null || p === undefined) return '—';
+  const val = parseFloat(p);
+  if (isNaN(val)) return '—';
+  const pct = Math.round(val * 100);
   const fc = pct === 0 ? 'f-red' : pct < 100 ? 'f-amber' : 'f-teal';
-  return `<span class="bar-wrap"><span class="bar-bg"><span class="bar-fill ${fc}" style="width:${Math.min(pct,100)}%"></span></span><span>${pct}%</span></span>`;
+  return `<span class="bar-wrap">
+    <span class="bar-bg"><span class="bar-fill ${fc}" style="width:${Math.min(pct,100)}%"></span></span>
+    <span>${pct}%</span>
+  </span>`;
 }
 
 function fmtDate(v) {
-  if (!v || v === '-') return '<span class="muted">—</span>';
+  if (!v || v.trim() === '' || v.trim() === '-') return '—';
   return v.substring(0, 10);
 }
 
 function fmtNum(v) {
-  if (v === '' || v === null || v === undefined) return '<span class="muted">—</span>';
+  const n = parseInt(v);
+  return isNaN(n) ? '—' : n;
+}
+
+function fmtTime(v) {
+  if (!v || v.trim() === '' || v.trim() === '-') return '—';
   return v;
-}
-
-function shortMR(v) {
-  if (!v) return '—';
-  const m = v.match(/MAT-REQ-\d{4}-(\w+)/);
-  return m ? `<span title="${v}">…${m[1]}</span>` : `<span title="${v}">${v.substring(0,16)}…</span>`;
-}
-
-function shortArr(v) {
-  if (!v) return '—';
-  const m = v.match(/-([a-f0-9]{8})$/);
-  return m ? `<span title="${v}">…${m[1]}</span>` : `<span title="${v}">${v.substring(0,22)}…</span>`;
 }
 
 function parseCSV(text) {
@@ -232,26 +335,33 @@ function parseCSV(text) {
 
 function loadRows(rows) {
   RAW = rows.map(r => ({
-    mr:    r['Material Request'] || '',
-    arr:   r['Arrangement'] || '',
-    whO:   r['Warehouse Origen'] || '',
-    whD:   r['Warehouse Destino'] || '',
-    tTJ:   r['Total Transfer Job'] || '',
-    tjC:   r['Transfer Job Cerradas'] || '',
-    tjP:   r['Transfer Job Pendientes'] || '',
-    avance:r['Avance'] || '',
-    qT:    r['Qty total'] || '',
-    qE:    r['Items en Delivered'] || '',
-    st:    r['Arrangement Status'] || '',
-    fMR:   r['MR creation'] || '',
-    fReq:  r['MR required by'] || '',
-    fIP:   r['Arr in progress'] || '',
-    fD:    r['Fecha arr done'] || '',
-    tT:    r['tiempo total MR (h)'] || '',
-    tO:    r['tiempo operativo (h)'] || '',
+    mr:    r['Material Request']         || '',
+    sc:    r['Shipping Core']            || '',
+    arr:   r['Arrangement']              || '',
+    whO:   r['Warehouse Origen']         || '',
+    whD:   r['Warehouse Destino']        || '',
+    tTJ:   r['Total Transfer Job']       || '',
+    tjC:   r['Transfer Job Cerradas']    || '',
+    tjP:   r['Transfer Job Pendientes']  || '',
+    qT:    r['Qty total']                || '',
+    qE:    r['Items en Delivered']       || '',
+    avance:r['Avance']                   || '',
+    st:    r['Arrangement Status']       || '',
+    fMR:   r['MR creation']             || '',
+    fReq:  r['MR required by']          || '',
+    fIP:   r['Arr in progress']         || '',
+    fD:    r['Fecha arr done']          || '',
+    tT:    r['tiempo total MR (h)']     || '',
+    tO:    r['tiempo operativo (h)']    || '',
   }));
+
   populateSelects();
   fil = [...RAW];
+
+  // mostrar dashboard, ocultar empty state
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('dashboard-content').style.display = 'block';
+
   clearFilter();
 }
 
@@ -297,11 +407,11 @@ function applyFilter() {
   const v = getVals();
   fil = RAW.filter(r => {
     const d = r.fMR.substring(0, 10);
-    if (v.df   && d < v.df)        return false;
-    if (v.dt   && d > v.dt)        return false;
-    if (v.orig && r.whO !== v.orig) return false;
-    if (v.dest && r.whD !== v.dest) return false;
-    if (v.est  && r.st  !== v.est)  return false;
+    if (v.df   && d < v.df)         return false;
+    if (v.dt   && d > v.dt)         return false;
+    if (v.orig && r.whO !== v.orig)  return false;
+    if (v.dest && r.whD !== v.dest)  return false;
+    if (v.est  && r.st  !== v.est)   return false;
     return true;
   });
   renderChips(v);
@@ -311,7 +421,8 @@ function applyFilter() {
 function clearFilter() {
   ['df','dt'].forEach(id => document.getElementById(id).value = '');
   ['f-orig','f-dest','f-est'].forEach(id => document.getElementById(id).value = '');
-  fil = [...RAW];
+  // ordenar: más reciente primero
+  fil = [...RAW].sort((a, b) => b.fMR.localeCompare(a.fMR));
   renderChips({});
   render();
 }
@@ -319,20 +430,22 @@ function clearFilter() {
 function avgNum(arr) {
   const nums = arr.map(v => parseFloat(v)).filter(n => !isNaN(n) && n > 0);
   if (!nums.length) return '—';
-  return (nums.reduce((a, b) => a + b, 0) / nums.length).toFixed(1) + 'h';
+  return (nums.reduce((a, b) => a + b, 0) / nums.length).toFixed(2) + 'h';
 }
 
 function render() {
+  // ordenar fil: más reciente primero
+  fil.sort((a, b) => b.fMR.localeCompare(a.fMR));
+
   const tArr = fil.length;
-  const tProg = fil.filter(r => r.st === 'In progress').length;
-  const tFail = fil.filter(r => r.st === 'Failed').length;
-  const tCanc = fil.filter(r => r.st === 'Cancelled').length;
-  const tTJ   = fil.reduce((s, r) => s + (parseInt(r.tTJ) || 0), 0);
-  const tTJP  = fil.reduce((s, r) => s + (parseInt(r.tjP) || 0), 0);
-  const done  = fil.filter(r => r.st === 'Done');
-  const avgT  = avgNum(done.map(r => r.tT));
-  const avgO  = avgNum(fil.filter(r => r.tO && r.tO !== '-').map(r => r.tO));
-  const vals  = { arr:tArr, prog:tProg, fail:tFail, canc:tCanc, tj:tTJ, tjp:tTJP, tt:avgT, to:avgO };
+  const tTJ  = fil.reduce((s, r) => s + (parseInt(r.tTJ) || 0), 0);
+  const tC   = fil.reduce((s, r) => s + (parseInt(r.tjC) || 0), 0);
+  const tP   = fil.reduce((s, r) => s + (parseInt(r.tjP) || 0), 0);
+  const pct  = tTJ > 0 ? Math.round(tC / tTJ * 100) : 0;
+  const done = fil.filter(r => r.st === 'Done');
+  const avgT = avgNum(fil.filter(r => r.tT && r.tT !== '-').map(r => r.tT));
+  const avgO = avgNum(fil.filter(r => r.tO && r.tO !== '-').map(r => r.tO));
+  const vals = { arr:tArr, tj:tTJ, comp:tC, pend:tP, pct:pct+'%', tt:avgT, to:avgO };
 
   document.getElementById('kpi-grid').innerHTML = KPI_DEFS.map(k => `
     <div class="kpi">
@@ -346,32 +459,35 @@ function render() {
 
   if (!fil.length) {
     document.getElementById('tb').innerHTML =
-      '<tr><td colspan="17" class="empty-msg">Sin resultados para los filtros seleccionados</td></tr>';
+      '<tr><td colspan="19" style="text-align:center;padding:28px;color:#bbb;font-size:12px">Sin resultados para los filtros seleccionados</td></tr>';
     return;
   }
 
-  document.getElementById('tb').innerHTML = fil.map(r => `<tr>
-    <td class="mono muted">${shortMR(r.mr)}</td>
-    <td class="mono" style="font-weight:600">${shortArr(r.arr)}</td>
-    <td style="font-size:10px">${r.whO || '—'}</td>
-    <td style="font-size:10px">${r.whD || '—'}</td>
-    <td style="text-align:center">${fmtNum(r.tTJ)}</td>
-    <td style="text-align:center;color:#0F6E56;font-weight:600">${fmtNum(r.tjC)}</td>
-    <td style="text-align:center;color:${(parseInt(r.tjP)||0)>0?'#854F0B':'#1a1a1a'};font-weight:${(parseInt(r.tjP)||0)>0?600:400}">${fmtNum(r.tjP)}</td>
-    <td>${bar(r.avance)}</td>
-    <td style="text-align:right">${fmtNum(r.qT)}</td>
-    <td style="text-align:right;font-weight:600">${fmtNum(r.qE)}</td>
-    <td>${badge(r.st)}</td>
-    <td class="muted">${fmtDate(r.fMR)}</td>
-    <td class="muted">${fmtDate(r.fReq)}</td>
-    <td class="muted">${fmtDate(r.fIP)}</td>
-    <td class="muted">${fmtDate(r.fD)}</td>
-    <td style="font-weight:500">${r.tT || '—'}</td>
-    <td style="font-weight:500">${r.tO && r.tO !== '-' ? r.tO : '—'}</td>
-  </tr>`).join('');
+  document.getElementById('tb').innerHTML = fil.map((r, i) => `
+    <tr>
+      <td class="center muted" style="font-size:11px">${i + 1}</td>
+      <td>${r.mr || '—'}</td>
+      <td>${r.sc || '—'}</td>
+      <td>${r.arr || '—'}</td>
+      <td>${r.whO || '—'}</td>
+      <td>${r.whD || '—'}</td>
+      <td class="center">${fmtNum(r.tTJ)}</td>
+      <td class="center" style="color:#0F6E56;font-weight:600">${fmtNum(r.tjC)}</td>
+      <td class="center" style="color:${(parseInt(r.tjP)||0)>0?'#854F0B':'#1a1a1a'};font-weight:${(parseInt(r.tjP)||0)>0?600:400}">${fmtNum(r.tjP)}</td>
+      <td class="num">${fmtNum(r.qT)}</td>
+      <td class="num" style="font-weight:600">${fmtNum(r.qE)}</td>
+      <td>${bar(r.avance)}</td>
+      <td>${badge(r.st)}</td>
+      <td class="muted">${fmtDate(r.fMR)}</td>
+      <td class="muted">${fmtDate(r.fReq)}</td>
+      <td class="muted">${fmtDate(r.fIP)}</td>
+      <td class="muted">${fmtDate(r.fD)}</td>
+      <td class="num">${fmtTime(r.tT)}</td>
+      <td class="num">${fmtTime(r.tO)}</td>
+    </tr>`).join('');
 }
 
-// File upload
+// File upload handler
 document.getElementById('file-input').addEventListener('change', function(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -379,32 +495,20 @@ document.getElementById('file-input').addEventListener('change', function(e) {
   reader.onload = function(ev) {
     try {
       const rows = parseCSV(ev.target.result);
+      if (!rows.length) throw new Error('Sin filas');
       loadRows(rows);
-      document.getElementById('upload-status').textContent = `${rows.length} registros cargados — ${file.name}`;
+      document.getElementById('upload-status').textContent =
+        `${rows.length} registros cargados — ${file.name}`;
       document.getElementById('upload-status').style.color = '#0F6E56';
     } catch(err) {
-      document.getElementById('upload-status').textContent = 'Error al leer el archivo. Verifica que sea un CSV válido.';
+      document.getElementById('upload-status').textContent =
+        'Error al leer el archivo. Verifica que sea un CSV válido.';
       document.getElementById('upload-status').style.color = '#A32D2D';
     }
   };
   reader.readAsText(file);
 });
-
-// Datos de ejemplo al arrancar
-const SAMPLE = [
-  {mr:'MAT-REQ-2026-50a2b022',arr:'Interwarehouse - MEX1 - D2C - KSMV - 2026-04-27 - 32903645',whO:'MEX1 - B2B - KSMV',whD:'MEX1 - D2C - KSMV',tTJ:'',tjC:'',tjP:'',avance:'',qT:'373',qE:'',st:'Failed',fMR:'2026-04-22',fReq:'2026-04-27',fIP:'',fD:'-',tT:'13.46',tO:'-'},
-  {mr:'MAT-REQ-2026-2532e5ad',arr:'Interwarehouse - MEX1 - D2C - KSMV - 2026-04-27 - 9e6e8bd1',whO:'MEX1 - B2B - KSMV',whD:'MEX1 - D2C - KSMV',tTJ:'',tjC:'',tjP:'',avance:'',qT:'480',qE:'',st:'Failed',fMR:'2026-04-22',fReq:'2026-04-27',fIP:'',fD:'-',tT:'13.46',tO:'-'},
-  {mr:'MAT-REQ-2026-2652e095',arr:'Interwarehouse - MEX1 - D2C - KSMV - 2026-04-27 - 1e081542',whO:'MEX1 - B2B - KSMV',whD:'MEX1 - D2C - KSMV',tTJ:'26',tjC:'',tjP:'26',avance:'',qT:'918',qE:'',st:'In progress',fMR:'2026-04-22',fReq:'2026-04-27',fIP:'2026-04-22',fD:'-',tT:'13.46',tO:'13.44'},
-  {mr:'MAT-REQ-2026-773447fb',arr:'Interwarehouse - MEX1 - D2C - KSMV - 2026-04-27 - acf9d0db',whO:'MEX1 - B2B - KSMV',whD:'MEX1 - D2C - KSMV',tTJ:'',tjC:'',tjP:'',avance:'',qT:'202',qE:'',st:'Failed',fMR:'2026-04-22',fReq:'2026-04-27',fIP:'',fD:'-',tT:'13.46',tO:'-'},
-  {mr:'MAT-REQ-2026-a1234567',arr:'Interwarehouse - MEX1 - D2C - KSMV - 2026-04-27 - b2345678',whO:'MEX1 - LI - KSMV',whD:'MEX1 - D2C - KSMV',tTJ:'4',tjC:'4',tjP:'0',avance:'1',qT:'150',qE:'150',st:'Done',fMR:'2026-04-21',fReq:'2026-04-27',fIP:'2026-04-21',fD:'2026-04-21',tT:'1.92',tO:'1.88'},
-  {mr:'MAT-REQ-2026-c3456789',arr:'Interwarehouse - MEX1 - D2C - KSMV - 2026-04-27 - d4567890',whO:'MEX1 - LI - KSMV',whD:'MEX1 - D2C - KSMV',tTJ:'',tjC:'',tjP:'',avance:'',qT:'300',qE:'',st:'Cancelled',fMR:'2026-04-21',fReq:'2026-04-27',fIP:'',fD:'-',tT:'5.20',tO:'-'},
-  {mr:'MAT-REQ-2026-e5678901',arr:'Interwarehouse - MEX1 - D2C - KSMV - 2026-04-27 - f6789012',whO:'MEX1 - B2B - KSMV',whD:'MEX1 - D2C - KSMV',tTJ:'',tjC:'',tjP:'',avance:'',qT:'450',qE:'',st:'Creating',fMR:'2026-04-22',fReq:'2026-04-27',fIP:'',fD:'-',tT:'12.46',tO:'-'},
-];
-
-RAW = SAMPLE;
-populateSelects();
-fil = [...RAW];
-render();
 </script>
+
 </body>
 </html>
