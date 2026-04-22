@@ -8,16 +8,12 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 13px;
-  background: #f4f4f0;
-  color: #1a1a1a;
-  padding: 2rem;
+  font-size: 13px; background: #f4f4f0; color: #1a1a1a; padding: 2rem;
 }
-
 .top-title { font-size: 18px; font-weight: 600; color: #111; margin-bottom: 3px; }
 .top-sub   { font-size: 12px; color: #999; margin-bottom: 1.25rem; }
 
-/* ── Upload ── */
+/* upload */
 .upload-zone {
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
   background: #fff; border: 1.5px dashed #c8e6d8;
@@ -32,12 +28,11 @@ body {
 #file-input { display: none; }
 .upload-status { font-size: 11px; color: #888; font-style: italic; }
 
-/* ── Empty state ── */
+/* empty / loading */
 .empty-state {
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 4rem 2rem; text-align: center;
-  background: #fff; border: 1px solid #e2e2dc; border-radius: 12px;
-  margin-top: 1rem;
+  background: #fff; border: 1px solid #e2e2dc; border-radius: 12px; margin-top: 1rem;
 }
 .empty-state-icon {
   width: 48px; height: 48px; border-radius: 50%;
@@ -45,9 +40,15 @@ body {
   margin-bottom: 1rem;
 }
 .empty-state h3 { font-size: 15px; font-weight: 600; color: #222; margin-bottom: 6px; }
-.empty-state p  { font-size: 12px; color: #888; max-width: 320px; line-height: 1.6; }
+.empty-state p  { font-size: 12px; color: #888; max-width: 340px; line-height: 1.6; }
+.spinner {
+  width: 20px; height: 20px; border: 2px solid #e0e0da;
+  border-top-color: #1D9E75; border-radius: 50%;
+  animation: spin .7s linear infinite; margin-bottom: 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Filters ── */
+/* filters */
 .filters-bar {
   display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
   background: #fff; border: 1px solid #e2e2dc;
@@ -56,9 +57,8 @@ body {
 .fg { display: flex; align-items: center; gap: 6px; }
 .fg label { font-size: 11px; font-weight: 500; color: #777; white-space: nowrap; }
 .fg input[type=date], .fg select {
-  font-size: 11px; padding: 5px 8px;
-  border: 1px solid #ddd; border-radius: 6px;
-  background: #fafaf8; color: #1a1a1a; outline: none; height: 28px;
+  font-size: 11px; padding: 5px 8px; border: 1px solid #ddd;
+  border-radius: 6px; background: #fafaf8; color: #1a1a1a; outline: none; height: 28px;
 }
 .fsep { width: 1px; height: 22px; background: #e2e2dc; flex-shrink: 0; }
 .btn-ap {
@@ -67,32 +67,29 @@ body {
 }
 .btn-ap:hover { background: #0F6E56; }
 .btn-cl {
-  font-size: 11px; padding: 0 12px; height: 28px;
-  border-radius: 99px; border: 1px solid #ddd;
-  background: transparent; color: #888; cursor: pointer;
+  font-size: 11px; padding: 0 12px; height: 28px; border-radius: 99px;
+  border: 1px solid #ddd; background: transparent; color: #888; cursor: pointer;
 }
 .btn-cl:hover { background: #f0f0ea; }
 
-/* ── Chips ── */
+/* chips */
 .chips { display: flex; gap: 5px; flex-wrap: wrap; min-height: 4px; margin-bottom: 1rem; }
 .chip {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-size: 10px; padding: 3px 10px; border-radius: 99px;
+  display: inline-flex; align-items: center; gap: 5px; font-size: 10px;
+  padding: 3px 10px; border-radius: 99px;
   background: #E6F1FB; color: #185FA5; border: 1px solid #B5D4F4;
 }
 .chip-x { cursor: pointer; opacity: .6; font-size: 14px; line-height: 1; }
 .chip-x:hover { opacity: 1; }
 
-/* ── KPI Grid ── */
+/* kpis */
 .kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
   gap: 10px; margin-bottom: 1.75rem;
 }
 .kpi {
   background: #fff; border: 1px solid #e2e2dc;
-  border-radius: 12px; padding: 14px 16px 16px;
-  position: relative; overflow: hidden;
+  border-radius: 12px; padding: 14px 16px 16px; position: relative; overflow: hidden;
 }
 .ka { position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 12px 12px 0 0; }
 .kl { font-size: 11px; color: #999; margin-bottom: 6px; margin-top: 6px; line-height: 1.35; }
@@ -103,30 +100,24 @@ body {
 .kv.purple { color: #534AB7; }
 .kv.sm     { font-size: 17px; font-weight: 500; }
 
-/* ── Divider ── */
 .divider { border: none; border-top: 1px solid #e2e2dc; margin: 1.5rem 0; }
-
-/* ── Section row ── */
 .section-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
 .slabel { font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #aaa; }
 .rcount { font-size: 11px; color: #bbb; }
 
-/* ── Table ── */
+/* table */
 .table-wrap { overflow-x: auto; border: 1px solid #e2e2dc; border-radius: 12px; background: #fff; }
 table { width: 100%; border-collapse: collapse; font-size: 12px; }
 th {
-  font-size: 11px; font-weight: 500; color: #888;
-  text-align: left; padding: 10px 12px;
-  border-bottom: 1px solid #e2e2dc; white-space: nowrap;
-  background: #f8f8f4;
+  font-size: 11px; font-weight: 500; color: #888; text-align: left;
+  padding: 10px 12px; border-bottom: 1px solid #e2e2dc;
+  white-space: nowrap; background: #f8f8f4;
 }
 th.num { text-align: right; }
 th.center { text-align: center; }
 td {
-  padding: 9px 12px; border-bottom: 1px solid #f0f0ea;
-  color: #1a1a1a; vertical-align: middle;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  padding: 9px 12px; border-bottom: 1px solid #f0f0ea; color: #1a1a1a;
+  vertical-align: middle; font-variant-numeric: tabular-nums; white-space: nowrap;
 }
 td.num    { text-align: right; }
 td.center { text-align: center; }
@@ -134,7 +125,7 @@ td.muted  { color: #aaa; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #fafaf8; }
 
-/* ── Badges ── */
+/* badges */
 .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: 99px; }
 .b-done      { background: #E1F5EE; color: #085041; }
 .b-failed    { background: #FCEBEB; color: #791F1F; }
@@ -148,13 +139,15 @@ tr:hover td { background: #fafaf8; }
 .dot-cancelled { background: #888780; }
 .dot-creating  { background: #185FA5; }
 
-/* ── Progress bar ── */
+/* bar */
 .bar-wrap { display: inline-flex; align-items: center; gap: 7px; }
 .bar-bg   { width: 56px; height: 5px; background: #e8e8e2; border-radius: 99px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 99px; }
 .f-teal  { background: #1D9E75; }
 .f-amber { background: #BA7517; }
 .f-red   { background: #E24B4A; }
+
+.last-update { font-size: 11px; color: #bbb; margin-left: auto; }
 </style>
 </head>
 <body>
@@ -162,33 +155,34 @@ tr:hover td { background: #fafaf8; }
 <div class="top-title">Dashboard de acomodos automáticos — Interwarehouse transfer</div>
 <div class="top-sub">Visibilidad del proceso de transferencia entre bodegas adyacentes</div>
 
-<!-- Upload -->
+<!-- Upload manual (para actualizar) -->
 <div class="upload-zone">
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0">
-    <path d="M8 2v8M5 5l3-3 3 3M2 11v1.5A1.5 1.5 0 003.5 14h9a1.5 1.5 0 001.5-1.5V11" stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 2v8M5 5l3-3 3 3M2 11v1.5A1.5 1.5 0 003.5 14h9a1.5 1.5 0 001.5-1.5V11"
+      stroke="#1D9E75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
-  <label>Actualizar datos desde CSV</label>
-  <button class="upload-btn" onclick="document.getElementById('file-input').click()">Subir archivo</button>
+  <label>Actualizar datos manualmente</label>
+  <button class="upload-btn" onclick="document.getElementById('file-input').click()">Subir CSV</button>
   <input type="file" id="file-input" accept=".csv">
-  <span class="upload-status" id="upload-status">Ningún archivo cargado — sube el CSV para ver la información</span>
+  <span class="upload-status" id="upload-status"></span>
 </div>
 
-<!-- Empty state (visible al inicio) -->
+<!-- Loading / empty state -->
 <div class="empty-state" id="empty-state">
-  <div class="empty-state-icon">
+  <div class="spinner" id="spinner"></div>
+  <div class="empty-state-icon" id="empty-icon" style="display:none">
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-      <path d="M11 2v7M8 6l3-3 3 3M3 13v4a2 2 0 002 2h12a2 2 0 002-2v-4" stroke="#0F6E56" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M7 10H3M19 10h-4" stroke="#0F6E56" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M11 2v7M8 6l3-3 3 3M3 13v4a2 2 0 002 2h12a2 2 0 002-2v-4"
+        stroke="#0F6E56" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
   </div>
-  <h3>Sube el archivo CSV para comenzar</h3>
-  <p>Haz clic en <strong>"Subir archivo"</strong> para cargar el reporte de acomodos. El dashboard se actualizará automáticamente con la información del archivo.</p>
+  <h3 id="empty-title">Cargando datos...</h3>
+  <p id="empty-msg">Obteniendo el reporte desde GitHub, un momento.</p>
 </div>
 
-<!-- Dashboard (oculto hasta que se cargue CSV) -->
+<!-- Dashboard (oculto hasta que carguen datos) -->
 <div id="dashboard-content" style="display:none">
 
-  <!-- Filters -->
   <div class="filters-bar">
     <div class="fg"><label>Desde</label><input type="date" id="df"></div>
     <div class="fsep"></div>
@@ -218,15 +212,14 @@ tr:hover td { background: #fafaf8; }
     <div class="fsep"></div>
     <button class="btn-ap" onclick="applyFilter()">Aplicar</button>
     <button class="btn-cl" onclick="clearFilter()">Limpiar</button>
+    <span class="last-update" id="last-update"></span>
   </div>
   <div class="chips" id="chips"></div>
 
-  <!-- KPIs -->
   <div class="kpi-grid" id="kpi-grid"></div>
 
   <hr class="divider">
 
-  <!-- Table -->
   <div class="section-row">
     <span class="slabel">Resumen por arrangement</span>
     <span class="rcount" id="rc"></span>
@@ -262,253 +255,280 @@ tr:hover td { background: #fafaf8; }
 </div>
 
 <script>
-let RAW = [];
-let fil = [];
+  // ─────────────────────────────────────────────────────
+  // URL del CSV en GitHub — se actualiza automáticamente
+  // cuando subes un nuevo CSV al repositorio
+  // ─────────────────────────────────────────────────────
+  const CSV_URL = 'https://raw.githubusercontent.com/arturogarcia-Puntos/acomodos-dashboard/main/InterWarehouse%20Report.csv';
 
-const KPI_DEFS = [
-  { id:'arr',  label:'Total arrangements',      cls:'blue',   accent:'#378ADD' },
-  { id:'tj',   label:'Total transfer jobs',      cls:'',       accent:'#B4B2A9' },
-  { id:'comp', label:'TJs completados',          cls:'teal',   accent:'#1D9E75' },
-  { id:'pend', label:'TJs pendientes',           cls:'amber',  accent:'#BA7517' },
-  { id:'pct',  label:'% avance de TJs',          cls:'purple', accent:'#7F77DD' },
-  { id:'tt',   label:'Tiempo prom. completo (h)',cls:'sm',     accent:'#5DCAA5' },
-  { id:'to',   label:'Tiempo prom. operativo (h)',cls:'sm',    accent:'#5DCAA5' },
-];
+  let RAW = [];
+  let fil = [];
 
-function badge(st) {
-  const map = {
-    'Done':        ['b-done',     'dot-done'],
-    'In progress': ['b-progress', 'dot-progress'],
-    'Failed':      ['b-failed',   'dot-failed'],
-    'Cancelled':   ['b-cancelled','dot-cancelled'],
-    'Creating':    ['b-creating', 'dot-creating'],
-  };
-  const [bc, dc] = map[st] || ['b-cancelled', 'dot-cancelled'];
-  return `<span class="badge ${bc}"><span class="dot ${dc}"></span>${st}</span>`;
-}
+  const KPI_DEFS = [
+    { id:'arr',  label:'Total arrangements',       cls:'blue',   accent:'#378ADD' },
+    { id:'tj',   label:'Total transfer jobs',       cls:'',       accent:'#B4B2A9' },
+    { id:'comp', label:'TJs completados',           cls:'teal',   accent:'#1D9E75' },
+    { id:'pend', label:'TJs pendientes',            cls:'amber',  accent:'#BA7517' },
+    { id:'pct',  label:'% avance de TJs',           cls:'purple', accent:'#7F77DD' },
+    { id:'tt',   label:'Tiempo prom. completo (h)', cls:'sm',     accent:'#5DCAA5' },
+    { id:'to',   label:'Tiempo prom. operativo (h)',cls:'sm',     accent:'#5DCAA5' },
+  ];
 
-function bar(p) {
-  if (p === '' || p === null || p === undefined) return '—';
-  const val = parseFloat(p);
-  if (isNaN(val)) return '—';
-  const pct = Math.round(val * 100);
-  const fc = pct === 0 ? 'f-red' : pct < 100 ? 'f-amber' : 'f-teal';
-  return `<span class="bar-wrap">
-    <span class="bar-bg"><span class="bar-fill ${fc}" style="width:${Math.min(pct,100)}%"></span></span>
-    <span>${pct}%</span>
-  </span>`;
-}
-
-function fmtDate(v) {
-  if (!v || v.trim() === '' || v.trim() === '-') return '—';
-  return v.substring(0, 10);
-}
-
-function fmtNum(v) {
-  const n = parseInt(v);
-  return isNaN(n) ? '—' : n;
-}
-
-function fmtTime(v) {
-  if (!v || v.trim() === '' || v.trim() === '-') return '—';
-  return v;
-}
-
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
-  return lines.slice(1).map(line => {
-    const vals = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (c === '"') { inQ = !inQ; }
-      else if (c === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
-      else { cur += c; }
-    }
-    vals.push(cur.trim());
-    const obj = {};
-    headers.forEach((h, i) => obj[h] = (vals[i] || '').replace(/"/g, '').trim());
-    return obj;
-  });
-}
-
-function loadRows(rows) {
-  RAW = rows.map(r => ({
-    mr:    r['Material Request']         || '',
-    sc:    r['Shipping Core']            || '',
-    arr:   r['Arrangement']              || '',
-    whO:   r['Warehouse Origen']         || '',
-    whD:   r['Warehouse Destino']        || '',
-    tTJ:   r['Total Transfer Job']       || '',
-    tjC:   r['Transfer Job Cerradas']    || '',
-    tjP:   r['Transfer Job Pendientes']  || '',
-    qT:    r['Qty total']                || '',
-    qE:    r['Items en Delivered']       || '',
-    avance:r['Avance']                   || '',
-    st:    r['Arrangement Status']       || '',
-    fMR:   r['MR creation']             || '',
-    fReq:  r['MR required by']          || '',
-    fIP:   r['Arr in progress']         || '',
-    fD:    r['Fecha arr done']          || '',
-    tT:    r['tiempo total MR (h)']     || '',
-    tO:    r['tiempo operativo (h)']    || '',
-  }));
-
-  populateSelects();
-  fil = [...RAW];
-
-  // mostrar dashboard, ocultar empty state
-  document.getElementById('empty-state').style.display = 'none';
-  document.getElementById('dashboard-content').style.display = 'block';
-
-  clearFilter();
-}
-
-function populateSelects() {
-  const orig = [...new Set(RAW.map(r => r.whO).filter(Boolean))].sort();
-  const dest = [...new Set(RAW.map(r => r.whD).filter(Boolean))].sort();
-  document.getElementById('f-orig').innerHTML =
-    '<option value="">Todas</option>' + orig.map(w => `<option>${w}</option>`).join('');
-  document.getElementById('f-dest').innerHTML =
-    '<option value="">Todas</option>' + dest.map(w => `<option>${w}</option>`).join('');
-}
-
-function getVals() {
-  return {
-    df:   document.getElementById('df').value,
-    dt:   document.getElementById('dt').value,
-    orig: document.getElementById('f-orig').value,
-    dest: document.getElementById('f-dest').value,
-    est:  document.getElementById('f-est').value,
-  };
-}
-
-function renderChips(v) {
-  const items = [];
-  if (v.df || v.dt) items.push({ label:`Fecha: ${v.df||'…'} → ${v.dt||'…'}`, key:'date' });
-  if (v.orig) items.push({ label:`Origen: ${v.orig}`, key:'orig' });
-  if (v.dest) items.push({ label:`Destino: ${v.dest}`, key:'dest' });
-  if (v.est)  items.push({ label:`Estado: ${v.est}`, key:'est' });
-  document.getElementById('chips').innerHTML = items.map(i =>
-    `<span class="chip">${i.label}<span class="chip-x" onclick="clearOne('${i.key}')">×</span></span>`
-  ).join('');
-}
-
-function clearOne(key) {
-  if (key === 'date') { document.getElementById('df').value = ''; document.getElementById('dt').value = ''; }
-  if (key === 'orig') document.getElementById('f-orig').value = '';
-  if (key === 'dest') document.getElementById('f-dest').value = '';
-  if (key === 'est')  document.getElementById('f-est').value  = '';
-  applyFilter();
-}
-
-function applyFilter() {
-  const v = getVals();
-  fil = RAW.filter(r => {
-    const d = r.fMR.substring(0, 10);
-    if (v.df   && d < v.df)         return false;
-    if (v.dt   && d > v.dt)         return false;
-    if (v.orig && r.whO !== v.orig)  return false;
-    if (v.dest && r.whD !== v.dest)  return false;
-    if (v.est  && r.st  !== v.est)   return false;
-    return true;
-  });
-  renderChips(v);
-  render();
-}
-
-function clearFilter() {
-  ['df','dt'].forEach(id => document.getElementById(id).value = '');
-  ['f-orig','f-dest','f-est'].forEach(id => document.getElementById(id).value = '');
-  // ordenar: más reciente primero
-  fil = [...RAW].sort((a, b) => b.fMR.localeCompare(a.fMR));
-  renderChips({});
-  render();
-}
-
-function avgNum(arr) {
-  const nums = arr.map(v => parseFloat(v)).filter(n => !isNaN(n) && n > 0);
-  if (!nums.length) return '—';
-  return (nums.reduce((a, b) => a + b, 0) / nums.length).toFixed(2) + 'h';
-}
-
-function render() {
-  // ordenar fil: más reciente primero
-  fil.sort((a, b) => b.fMR.localeCompare(a.fMR));
-
-  const tArr = fil.length;
-  const tTJ  = fil.reduce((s, r) => s + (parseInt(r.tTJ) || 0), 0);
-  const tC   = fil.reduce((s, r) => s + (parseInt(r.tjC) || 0), 0);
-  const tP   = fil.reduce((s, r) => s + (parseInt(r.tjP) || 0), 0);
-  const pct  = tTJ > 0 ? Math.round(tC / tTJ * 100) : 0;
-  const done = fil.filter(r => r.st === 'Done');
-  const avgT = avgNum(fil.filter(r => r.tT && r.tT !== '-').map(r => r.tT));
-  const avgO = avgNum(fil.filter(r => r.tO && r.tO !== '-').map(r => r.tO));
-  const vals = { arr:tArr, tj:tTJ, comp:tC, pend:tP, pct:pct+'%', tt:avgT, to:avgO };
-
-  document.getElementById('kpi-grid').innerHTML = KPI_DEFS.map(k => `
-    <div class="kpi">
-      <div class="ka" style="background:${k.accent}"></div>
-      <div class="kl">${k.label}</div>
-      <div class="kv ${k.cls}">${vals[k.id]}</div>
-    </div>`).join('');
-
-  document.getElementById('rc').textContent =
-    `${fil.length} arrangement${fil.length !== 1 ? 's' : ''} encontrado${fil.length !== 1 ? 's' : ''}`;
-
-  if (!fil.length) {
-    document.getElementById('tb').innerHTML =
-      '<tr><td colspan="19" style="text-align:center;padding:28px;color:#bbb;font-size:12px">Sin resultados para los filtros seleccionados</td></tr>';
-    return;
+  function badge(st) {
+    const map = {
+      'Done':        ['b-done',     'dot-done'],
+      'In progress': ['b-progress', 'dot-progress'],
+      'Failed':      ['b-failed',   'dot-failed'],
+      'Cancelled':   ['b-cancelled','dot-cancelled'],
+      'Creating':    ['b-creating', 'dot-creating'],
+    };
+    const [bc, dc] = map[st] || ['b-cancelled', 'dot-cancelled'];
+    return `<span class="badge ${bc}"><span class="dot ${dc}"></span>${st}</span>`;
   }
 
-  document.getElementById('tb').innerHTML = fil.map((r, i) => `
-    <tr>
-      <td class="center muted" style="font-size:11px">${i + 1}</td>
-      <td>${r.mr || '—'}</td>
-      <td>${r.sc || '—'}</td>
-      <td>${r.arr || '—'}</td>
-      <td>${r.whO || '—'}</td>
-      <td>${r.whD || '—'}</td>
-      <td class="center">${fmtNum(r.tTJ)}</td>
-      <td class="center" style="color:#0F6E56;font-weight:600">${fmtNum(r.tjC)}</td>
-      <td class="center" style="color:${(parseInt(r.tjP)||0)>0?'#854F0B':'#1a1a1a'};font-weight:${(parseInt(r.tjP)||0)>0?600:400}">${fmtNum(r.tjP)}</td>
-      <td class="num">${fmtNum(r.qT)}</td>
-      <td class="num" style="font-weight:600">${fmtNum(r.qE)}</td>
-      <td>${bar(r.avance)}</td>
-      <td>${badge(r.st)}</td>
-      <td class="muted">${fmtDate(r.fMR)}</td>
-      <td class="muted">${fmtDate(r.fReq)}</td>
-      <td class="muted">${fmtDate(r.fIP)}</td>
-      <td class="muted">${fmtDate(r.fD)}</td>
-      <td class="num">${fmtTime(r.tT)}</td>
-      <td class="num">${fmtTime(r.tO)}</td>
-    </tr>`).join('');
-}
+  function bar(p) {
+    if (p === '' || p === null || p === undefined) return '—';
+    const val = parseFloat(p);
+    if (isNaN(val)) return '—';
+    const pct = Math.round(val * 100);
+    const fc = pct === 0 ? 'f-red' : pct < 100 ? 'f-amber' : 'f-teal';
+    return `<span class="bar-wrap">
+      <span class="bar-bg"><span class="bar-fill ${fc}" style="width:${Math.min(pct,100)}%"></span></span>
+      <span>${pct}%</span>
+    </span>`;
+  }
 
-// File upload handler
-document.getElementById('file-input').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    try {
-      const rows = parseCSV(ev.target.result);
-      if (!rows.length) throw new Error('Sin filas');
-      loadRows(rows);
-      document.getElementById('upload-status').textContent =
-        `${rows.length} registros cargados — ${file.name}`;
-      document.getElementById('upload-status').style.color = '#0F6E56';
-    } catch(err) {
-      document.getElementById('upload-status').textContent =
-        'Error al leer el archivo. Verifica que sea un CSV válido.';
-      document.getElementById('upload-status').style.color = '#A32D2D';
+  function fmtDate(v) {
+    if (!v || v.trim() === '' || v.trim() === '-') return '—';
+    return v.substring(0, 10);
+  }
+
+  function fmtNum(v) {
+    const n = parseInt(v);
+    return isNaN(n) ? '—' : n;
+  }
+
+  function fmtTime(v) {
+    if (!v || v.trim() === '' || v.trim() === '-') return '—';
+    return v;
+  }
+
+  function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+    return lines.slice(1).map(line => {
+      const vals = [];
+      let cur = '', inQ = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') { inQ = !inQ; }
+        else if (c === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+        else { cur += c; }
+      }
+      vals.push(cur.trim());
+      const obj = {};
+      headers.forEach((h, i) => obj[h] = (vals[i] || '').replace(/"/g, '').trim());
+      return obj;
+    });
+  }
+
+  function mapRow(r) {
+    return {
+      mr:    r['Material Request']        || '',
+      sc:    r['Shipping Core']           || '',
+      arr:   r['Arrangement']             || '',
+      whO:   r['Warehouse Origen']        || '',
+      whD:   r['Warehouse Destino']       || '',
+      tTJ:   r['Total Transfer Job']      || '',
+      tjC:   r['Transfer Job Cerradas']   || '',
+      tjP:   r['Transfer Job Pendientes'] || '',
+      qT:    r['Qty total']               || '',
+      qE:    r['Items en Delivered']      || '',
+      avance:r['Avance']                  || '',
+      st:    r['Arrangement Status']      || '',
+      fMR:   r['MR creation']            || '',
+      fReq:  r['MR required by']         || '',
+      fIP:   r['Arr in progress']        || '',
+      fD:    r['Fecha arr done']         || '',
+      tT:    r['tiempo total MR (h)']    || '',
+      tO:    r['tiempo operativo (h)']   || '',
+    };
+  }
+
+  function loadRows(rows, source) {
+    RAW = rows.map(mapRow);
+    populateSelects();
+    fil = [...RAW];
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('dashboard-content').style.display = 'block';
+    const now = new Date().toLocaleString('es-MX', { dateStyle:'short', timeStyle:'short' });
+    document.getElementById('last-update').textContent = `Última actualización: ${now} — ${source}`;
+    clearFilter();
+  }
+
+  function showError(msg) {
+    document.getElementById('spinner').style.display = 'none';
+    document.getElementById('empty-icon').style.display = 'flex';
+    document.getElementById('empty-title').textContent = 'No se pudo cargar el archivo';
+    document.getElementById('empty-msg').innerHTML = msg;
+  }
+
+  function populateSelects() {
+    const orig = [...new Set(RAW.map(r => r.whO).filter(Boolean))].sort();
+    const dest = [...new Set(RAW.map(r => r.whD).filter(Boolean))].sort();
+    document.getElementById('f-orig').innerHTML =
+      '<option value="">Todas</option>' + orig.map(w => `<option>${w}</option>`).join('');
+    document.getElementById('f-dest').innerHTML =
+      '<option value="">Todas</option>' + dest.map(w => `<option>${w}</option>`).join('');
+  }
+
+  function getVals() {
+    return {
+      df:   document.getElementById('df').value,
+      dt:   document.getElementById('dt').value,
+      orig: document.getElementById('f-orig').value,
+      dest: document.getElementById('f-dest').value,
+      est:  document.getElementById('f-est').value,
+    };
+  }
+
+  function renderChips(v) {
+    const items = [];
+    if (v.df || v.dt) items.push({ label:`Fecha: ${v.df||'…'} → ${v.dt||'…'}`, key:'date' });
+    if (v.orig) items.push({ label:`Origen: ${v.orig}`, key:'orig' });
+    if (v.dest) items.push({ label:`Destino: ${v.dest}`, key:'dest' });
+    if (v.est)  items.push({ label:`Estado: ${v.est}`, key:'est' });
+    document.getElementById('chips').innerHTML = items.map(i =>
+      `<span class="chip">${i.label}<span class="chip-x" onclick="clearOne('${i.key}')">×</span></span>`
+    ).join('');
+  }
+
+  function clearOne(key) {
+    if (key === 'date') { document.getElementById('df').value = ''; document.getElementById('dt').value = ''; }
+    if (key === 'orig') document.getElementById('f-orig').value = '';
+    if (key === 'dest') document.getElementById('f-dest').value = '';
+    if (key === 'est')  document.getElementById('f-est').value  = '';
+    applyFilter();
+  }
+
+  function applyFilter() {
+    const v = getVals();
+    fil = RAW.filter(r => {
+      const d = r.fMR.substring(0, 10);
+      if (v.df   && d < v.df)         return false;
+      if (v.dt   && d > v.dt)         return false;
+      if (v.orig && r.whO !== v.orig)  return false;
+      if (v.dest && r.whD !== v.dest)  return false;
+      if (v.est  && r.st  !== v.est)   return false;
+      return true;
+    });
+    renderChips(v);
+    render();
+  }
+
+  function clearFilter() {
+    ['df','dt'].forEach(id => document.getElementById(id).value = '');
+    ['f-orig','f-dest','f-est'].forEach(id => document.getElementById(id).value = '');
+    fil = [...RAW].sort((a, b) => b.fMR.localeCompare(a.fMR));
+    renderChips({});
+    render();
+  }
+
+  function avgNum(arr) {
+    const nums = arr.map(v => parseFloat(v)).filter(n => !isNaN(n) && n > 0);
+    if (!nums.length) return '—';
+    return (nums.reduce((a, b) => a + b, 0) / nums.length).toFixed(2) + 'h';
+  }
+
+  function render() {
+    fil.sort((a, b) => b.fMR.localeCompare(a.fMR));
+
+    const tArr = fil.length;
+    const tTJ  = fil.reduce((s, r) => s + (parseInt(r.tTJ) || 0), 0);
+    const tC   = fil.reduce((s, r) => s + (parseInt(r.tjC) || 0), 0);
+    const tP   = fil.reduce((s, r) => s + (parseInt(r.tjP) || 0), 0);
+    const pct  = tTJ > 0 ? Math.round(tC / tTJ * 100) : 0;
+    const avgT = avgNum(fil.filter(r => r.tT && r.tT !== '-').map(r => r.tT));
+    const avgO = avgNum(fil.filter(r => r.tO && r.tO !== '-').map(r => r.tO));
+    const vals = { arr:tArr, tj:tTJ, comp:tC, pend:tP, pct:pct+'%', tt:avgT, to:avgO };
+
+    document.getElementById('kpi-grid').innerHTML = KPI_DEFS.map(k => `
+      <div class="kpi">
+        <div class="ka" style="background:${k.accent}"></div>
+        <div class="kl">${k.label}</div>
+        <div class="kv ${k.cls}">${vals[k.id]}</div>
+      </div>`).join('');
+
+    document.getElementById('rc').textContent =
+      `${fil.length} arrangement${fil.length !== 1 ? 's' : ''} encontrado${fil.length !== 1 ? 's' : ''}`;
+
+    if (!fil.length) {
+      document.getElementById('tb').innerHTML =
+        '<tr><td colspan="19" style="text-align:center;padding:28px;color:#bbb;font-size:12px">Sin resultados para los filtros seleccionados</td></tr>';
+      return;
     }
-  };
-  reader.readAsText(file);
-});
-</script>
 
+    document.getElementById('tb').innerHTML = fil.map((r, i) => `
+      <tr>
+        <td class="center muted" style="font-size:11px">${i + 1}</td>
+        <td>${r.mr  || '—'}</td>
+        <td>${r.sc  || '—'}</td>
+        <td>${r.arr || '—'}</td>
+        <td>${r.whO || '—'}</td>
+        <td>${r.whD || '—'}</td>
+        <td class="center">${fmtNum(r.tTJ)}</td>
+        <td class="center" style="color:#0F6E56;font-weight:600">${fmtNum(r.tjC)}</td>
+        <td class="center" style="color:${(parseInt(r.tjP)||0)>0?'#854F0B':'#1a1a1a'};font-weight:${(parseInt(r.tjP)||0)>0?600:400}">${fmtNum(r.tjP)}</td>
+        <td class="num">${fmtNum(r.qT)}</td>
+        <td class="num" style="font-weight:600">${fmtNum(r.qE)}</td>
+        <td>${bar(r.avance)}</td>
+        <td>${badge(r.st)}</td>
+        <td class="muted">${fmtDate(r.fMR)}</td>
+        <td class="muted">${fmtDate(r.fReq)}</td>
+        <td class="muted">${fmtDate(r.fIP)}</td>
+        <td class="muted">${fmtDate(r.fD)}</td>
+        <td class="num">${fmtTime(r.tT)}</td>
+        <td class="num">${fmtTime(r.tO)}</td>
+      </tr>`).join('');
+  }
+
+  // ── Cargar CSV desde GitHub automáticamente ──
+  fetch(CSV_URL)
+    .then(res => {
+      if (!res.ok) throw new Error('No se encontró el archivo');
+      return res.text();
+    })
+    .then(text => {
+      const rows = parseCSV(text);
+      loadRows(rows, 'GitHub');
+      document.getElementById('upload-status').textContent = `${rows.length} registros cargados desde GitHub`;
+      document.getElementById('upload-status').style.color = '#0F6E56';
+    })
+    .catch(() => {
+      showError('No se encontró <strong>InterWarehouse Report.csv</strong> en el repositorio.<br>Sube el archivo a GitHub o usa el botón de arriba para cargarlo manualmente.');
+      document.getElementById('upload-status').textContent = 'Sube el CSV manualmente para ver los datos';
+    });
+
+  // ── Carga manual (sobreescribe los datos de GitHub) ──
+  document.getElementById('file-input').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const rows = parseCSV(ev.target.result);
+        if (!rows.length) throw new Error('Sin filas');
+        loadRows(rows, file.name);
+        document.getElementById('upload-status').textContent = `${rows.length} registros cargados — ${file.name}`;
+        document.getElementById('upload-status').style.color = '#0F6E56';
+        document.getElementById('empty-state').style.display = 'none';
+      } catch(err) {
+        document.getElementById('upload-status').textContent = 'Error al leer el archivo. Verifica que sea un CSV válido.';
+        document.getElementById('upload-status').style.color = '#A32D2D';
+      }
+    };
+    reader.readAsText(file);
+  });
+</script>
 </body>
 </html>
