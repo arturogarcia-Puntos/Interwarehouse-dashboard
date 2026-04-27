@@ -200,6 +200,15 @@ tr:hover td { background: #fafaf8; }
       </select>
     </div>
     <div class="fsep"></div>
+    <div class="fg">
+      <label>Estado del pedido</label>
+      <select id="f-timing">
+        <option value="">Todos</option>
+        <option value="ontime">En tiempo</option>
+        <option value="late">Retrasado</option>
+      </select>
+    </div>
+    <div class="fsep"></div>
     <button class="btn-ap" onclick="applyFilter()">Aplicar</button>
     <button class="btn-cl" onclick="clearFilter()">Limpiar</button>
     <span class="last-update" id="last-update"></span>
@@ -237,6 +246,7 @@ tr:hover td { background: #fafaf8; }
           <th>ARR done</th>
           <th class="num">T. total MR (h)</th>
           <th class="num">T. operativo (h)</th>
+          <th>Estado del pedido</th>
         </tr>
       </thead>
       <tbody id="tb"></tbody>
@@ -278,14 +288,14 @@ tr:hover td { background: #fafaf8; }
     return `<span class="badge ${bc}"><span class="dot ${dc}"></span>${st}</span>`;
   }
 
-  function bar(p) {
-    if (p === '' || p === null || p === undefined) return '—';
-    const val = parseFloat(p);
-    if (isNaN(val)) return '—';
-    const pct = Math.round(val * 100);
+  function bar(tjC, tTJ) {
+    const c = parseInt(tjC) || 0;
+    const t = parseInt(tTJ) || 0;
+    if (t === 0) return '—';
+    const pct = Math.round(c / t * 100);
     const fc = pct === 0 ? 'f-red' : pct < 100 ? 'f-amber' : 'f-teal';
     return `<span class="bar-wrap">
-      <span class="bar-bg"><span class="bar-fill ${fc}" style="width:${Math.min(pct,100)}%"></span></span>
+      <span class="bar-bg"><span class="bar-fill ${fc}" style="width:${pct}%"></span></span>
       <span>${pct}%</span>
     </span>`;
   }
@@ -383,7 +393,8 @@ tr:hover td { background: #fafaf8; }
       dt:   document.getElementById('dt').value,
       orig: document.getElementById('f-orig').value,
       dest: document.getElementById('f-dest').value,
-      est:  document.getElementById('f-est').value,
+      est:    document.getElementById('f-est').value,
+      timing: document.getElementById('f-timing').value,
     };
   }
 
@@ -392,7 +403,8 @@ tr:hover td { background: #fafaf8; }
     if (v.df || v.dt) items.push({ label:`Fecha: ${v.df||'…'} → ${v.dt||'…'}`, key:'date' });
     if (v.orig) items.push({ label:`Origen: ${v.orig}`, key:'orig' });
     if (v.dest) items.push({ label:`Destino: ${v.dest}`, key:'dest' });
-    if (v.est)  items.push({ label:`Estado: ${v.est}`, key:'est' });
+    if (v.est)    items.push({ label:`Estado: ${v.est}`, key:'est' });
+    if (v.timing) items.push({ label: v.timing === 'ontime' ? 'En tiempo' : 'Retrasado', key:'timing' });
     document.getElementById('chips').innerHTML = items.map(i =>
       `<span class="chip">${i.label}<span class="chip-x" onclick="clearOne('${i.key}')">×</span></span>`
     ).join('');
@@ -402,7 +414,8 @@ tr:hover td { background: #fafaf8; }
     if (key === 'date') { document.getElementById('df').value = ''; document.getElementById('dt').value = ''; }
     if (key === 'orig') document.getElementById('f-orig').value = '';
     if (key === 'dest') document.getElementById('f-dest').value = '';
-    if (key === 'est')  document.getElementById('f-est').value  = '';
+    if (key === 'est')    document.getElementById('f-est').value    = '';
+    if (key === 'timing') document.getElementById('f-timing').value = '';
     applyFilter();
   }
 
@@ -415,6 +428,14 @@ tr:hover td { background: #fafaf8; }
       if (v.orig && r.whO !== v.orig)  return false;
       if (v.dest && r.whD !== v.dest)  return false;
       if (v.est  && r.st  !== v.est)   return false;
+      if (v.timing) {
+        const today = new Date().toISOString().substring(0, 10);
+        const req   = r.fReq ? r.fReq.substring(0, 10) : '';
+        const isLate   = req && req < today;
+        const isOntime = req && req >= today;
+        if (v.timing === 'ontime' && !isOntime) return false;
+        if (v.timing === 'late'   && !isLate)   return false;
+      }
       return true;
     });
     renderChips(v);
@@ -423,7 +444,7 @@ tr:hover td { background: #fafaf8; }
 
   function clearFilter() {
     ['df','dt'].forEach(id => document.getElementById(id).value = '');
-    ['f-orig','f-dest','f-est'].forEach(id => document.getElementById(id).value = '');
+    ['f-orig','f-dest','f-est','f-timing'].forEach(id => document.getElementById(id).value = '');
     fil = [...RAW].sort((a, b) => b.fMR.localeCompare(a.fMR));
     renderChips({});
     render();
@@ -479,7 +500,7 @@ tr:hover td { background: #fafaf8; }
         <td class="center" style="color:${(parseInt(r.tjP)||0)>0?'#854F0B':'#1a1a1a'};font-weight:${(parseInt(r.tjP)||0)>0?600:400}">${fmtNum(r.tjP)}</td>
         <td class="num">${fmtNum(r.qT)}</td>
         <td class="num" style="font-weight:600">${fmtNum(r.qE)}</td>
-        <td>${bar(r.avance)}</td>
+        <td>${bar(r.tjC, r.tTJ)}</td>
         <td>${badge(r.st)}</td>
         <td class="muted">${fmtDate(r.fMR)}</td>
         <td class="muted">${fmtDate(r.fReq)}</td>
@@ -487,6 +508,7 @@ tr:hover td { background: #fafaf8; }
         <td class="muted">${fmtDate(r.fD)}</td>
         <td class="num">${fmtTime(r.tT)}</td>
         <td class="num">${fmtTime(r.tO)}</td>
+        <td>${(()=>{ const today=new Date().toISOString().substring(0,10); const req=r.fReq?r.fReq.substring(0,10):''; if(!req) return '<span class="muted">—</span>'; return req>=today ? '<span class="badge b-done"><span class="dot dot-done"></span>En tiempo</span>' : '<span class="badge b-failed"><span class="dot dot-failed"></span>Retrasado</span>'; })()}</td>
       </tr>`).join('');
   }
 
