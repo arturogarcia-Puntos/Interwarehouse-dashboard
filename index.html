@@ -93,6 +93,7 @@ body {
 .kv.teal   { color: #0F6E56; }
 .kv.amber  { color: #854F0B; }
 .kv.purple { color: #534AB7; }
+.kv.red    { color: #A32D2D; }
 .kv.sm     { font-size: 17px; font-weight: 500; }
 
 .divider { border: none; border-top: 1px solid #e2e2dc; margin: 1.5rem 0; }
@@ -254,13 +255,15 @@ tr:hover td { background: #fafaf8; }
   let fil = [];
 
   const KPI_DEFS = [
-    { id:'arr',  label:'Total arrangements',       cls:'blue',   accent:'#378ADD' },
-    { id:'tj',   label:'Total transfer jobs',       cls:'',       accent:'#B4B2A9' },
-    { id:'comp', label:'TJs completados',           cls:'teal',   accent:'#1D9E75' },
-    { id:'pend', label:'TJs pendientes',            cls:'amber',  accent:'#BA7517' },
-    { id:'pct',  label:'% avance de TJs',           cls:'purple', accent:'#7F77DD' },
-    { id:'tt',   label:'Tiempo prom. completo (h)', cls:'sm',     accent:'#5DCAA5' },
-    { id:'to',   label:'Tiempo prom. operativo (h)',cls:'sm',     accent:'#5DCAA5' },
+    { id:'arr',   label:'Total arrangements',        cls:'blue',   accent:'#378ADD' },
+    { id:'tj',    label:'Total transfer jobs',        cls:'',       accent:'#B4B2A9' },
+    { id:'comp',  label:'TJs completados',            cls:'teal',   accent:'#1D9E75' },
+    { id:'pend',  label:'TJs pendientes',             cls:'amber',  accent:'#BA7517' },
+    { id:'pct',   label:'% avance de TJs',            cls:'purple', accent:'#7F77DD' },
+    { id:'ontime',label:'MRs en tiempo',              cls:'teal',   accent:'#1D9E75' },
+    { id:'late',  label:'MRs retrasadas',             cls:'red',    accent:'#E24B4A' },
+    { id:'tt',    label:'Tiempo prom. completo (h)',  cls:'sm',     accent:'#5DCAA5' },
+    { id:'to',    label:'Tiempo prom. operativo (h)', cls:'sm',     accent:'#5DCAA5' },
   ];
 
   function badge(st) {
@@ -435,14 +438,17 @@ tr:hover td { background: #fafaf8; }
   function render() {
     fil.sort((a, b) => b.fMR.localeCompare(a.fMR));
 
-    const tArr = fil.length;
-    const tTJ  = fil.reduce((s, r) => s + (parseInt(r.tTJ) || 0), 0);
-    const tC   = fil.reduce((s, r) => s + (parseInt(r.tjC) || 0), 0);
-    const tP   = fil.reduce((s, r) => s + (parseInt(r.tjP) || 0), 0);
-    const pct  = tTJ > 0 ? Math.round(tC / tTJ * 100) : 0;
-    const avgT = avgNum(fil.filter(r => r.tT && r.tT !== '-').map(r => r.tT));
-    const avgO = avgNum(fil.filter(r => r.tO && r.tO !== '-').map(r => r.tO));
-    const vals = { arr:tArr, tj:tTJ, comp:tC, pend:tP, pct:pct+'%', tt:avgT, to:avgO };
+    const today = new Date().toISOString().substring(0, 10);
+    const tArr  = fil.length;
+    const tTJ   = fil.reduce((s, r) => s + (parseInt(r.tTJ) || 0), 0);
+    const tC    = fil.reduce((s, r) => s + (parseInt(r.tjC) || 0), 0);
+    const tP    = fil.reduce((s, r) => s + (parseInt(r.tjP) || 0), 0);
+    const pct   = tTJ > 0 ? Math.round(tC / tTJ * 100) : 0;
+    const ontime = fil.filter(r => r.fReq && r.fReq.substring(0,10) >= today).length;
+    const late   = fil.filter(r => r.fReq && r.fReq.substring(0,10) < today).length;
+    const avgT  = avgNum(fil.filter(r => r.tT && r.tT !== '-').map(r => r.tT));
+    const avgO  = avgNum(fil.filter(r => r.tO && r.tO !== '-').map(r => r.tO));
+    const vals  = { arr:tArr, tj:tTJ, comp:tC, pend:tP, pct:pct+'%', ontime, late, tt:avgT, to:avgO };
 
     document.getElementById('kpi-grid').innerHTML = KPI_DEFS.map(k => `
       <div class="kpi">
