@@ -144,6 +144,30 @@ tr:hover td { background: #fafaf8; }
 .f-red   { background: #E24B4A; }
 
 .last-update { font-size: 11px; color: #bbb; margin-left: auto; }
+
+/* multiselect dropdown */
+.ms-wrap { position: relative; }
+.ms-trigger {
+  font-size: 11px; padding: 5px 28px 5px 8px; border: 1px solid #ddd;
+  border-radius: 6px; background: #fafaf8; color: #1a1a1a;
+  outline: none; height: 28px; cursor: pointer; white-space: nowrap;
+  min-width: 120px; user-select: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 8px center;
+}
+.ms-trigger.active { border-color: #1D9E75; }
+.ms-dropdown {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0;
+  background: #fff; border: 1px solid #e2e2dc; border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.10); z-index: 100; min-width: 150px; padding: 4px 0;
+}
+.ms-dropdown.open { display: block; }
+.ms-option {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 12px; font-size: 12px; color: #1a1a1a; cursor: pointer;
+}
+.ms-option:hover { background: #f5f5f0; }
+.ms-option input[type=checkbox] { accent-color: #1D9E75; width: 13px; height: 13px; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -190,14 +214,16 @@ tr:hover td { background: #fafaf8; }
     <div class="fsep"></div>
     <div class="fg">
       <label>Estado</label>
-      <select id="f-est">
-        <option value="">Todos</option>
-        <option>In progress</option>
-        <option>Failed</option>
-        <option>Cancelled</option>
-        <option>Creating</option>
-        <option>Done</option>
-      </select>
+      <div class="ms-wrap">
+        <div class="ms-trigger" id="ms-trigger" onclick="toggleDropdown()">Todos</div>
+        <div class="ms-dropdown" id="ms-dropdown">
+          <label class="ms-option"><input type="checkbox" value="In progress" onchange="updateTrigger()"> In progress</label>
+          <label class="ms-option"><input type="checkbox" value="Failed" onchange="updateTrigger()"> Failed</label>
+          <label class="ms-option"><input type="checkbox" value="Cancelled" onchange="updateTrigger()"> Cancelled</label>
+          <label class="ms-option"><input type="checkbox" value="Creating" onchange="updateTrigger()"> Creating</label>
+          <label class="ms-option"><input type="checkbox" value="Done" onchange="updateTrigger()"> Done</label>
+        </div>
+      </div>
     </div>
     <div class="fsep"></div>
     <div class="fg">
@@ -388,22 +414,43 @@ tr:hover td { background: #fafaf8; }
   }
 
   function getVals() {
+    const checked = [...document.querySelectorAll('#ms-dropdown input[type=checkbox]:checked')].map(c => c.value);
     return {
-      df:   document.getElementById('df').value,
-      dt:   document.getElementById('dt').value,
-      orig: document.getElementById('f-orig').value,
-      dest: document.getElementById('f-dest').value,
-      est:    document.getElementById('f-est').value,
+      df:     document.getElementById('df').value,
+      dt:     document.getElementById('dt').value,
+      orig:   document.getElementById('f-orig').value,
+      dest:   document.getElementById('f-dest').value,
+      est:    checked,
       timing: document.getElementById('f-timing').value,
     };
   }
+
+  function toggleDropdown() {
+    const dd = document.getElementById('ms-dropdown');
+    dd.classList.toggle('open');
+    document.getElementById('ms-trigger').classList.toggle('active', dd.classList.contains('open'));
+  }
+
+  function updateTrigger() {
+    const checked = [...document.querySelectorAll('#ms-dropdown input[type=checkbox]:checked')].map(c => c.value);
+    document.getElementById('ms-trigger').textContent = checked.length === 0 ? 'Todos' : checked.join(', ');
+  }
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    const wrap = document.querySelector('.ms-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('ms-dropdown').classList.remove('open');
+      document.getElementById('ms-trigger').classList.remove('active');
+    }
+  });
 
   function renderChips(v) {
     const items = [];
     if (v.df || v.dt) items.push({ label:`Fecha: ${v.df||'…'} → ${v.dt||'…'}`, key:'date' });
     if (v.orig) items.push({ label:`Origen: ${v.orig}`, key:'orig' });
     if (v.dest) items.push({ label:`Destino: ${v.dest}`, key:'dest' });
-    if (v.est)    items.push({ label:`Estado: ${v.est}`, key:'est' });
+    if (v.est && v.est.length > 0) items.push({ label:`Estado: ${v.est.join(', ')}`, key:'est' });
     if (v.timing) items.push({ label: v.timing === 'ontime' ? 'En tiempo' : 'Retrasado', key:'timing' });
     document.getElementById('chips').innerHTML = items.map(i =>
       `<span class="chip">${i.label}<span class="chip-x" onclick="clearOne('${i.key}')">×</span></span>`
@@ -414,7 +461,10 @@ tr:hover td { background: #fafaf8; }
     if (key === 'date') { document.getElementById('df').value = ''; document.getElementById('dt').value = ''; }
     if (key === 'orig') document.getElementById('f-orig').value = '';
     if (key === 'dest') document.getElementById('f-dest').value = '';
-    if (key === 'est')    document.getElementById('f-est').value    = '';
+    if (key === 'est') {
+      document.querySelectorAll('#ms-dropdown input[type=checkbox]').forEach(c => c.checked = false);
+      document.getElementById('ms-trigger').textContent = 'Todos';
+    }
     if (key === 'timing') document.getElementById('f-timing').value = '';
     applyFilter();
   }
@@ -427,7 +477,7 @@ tr:hover td { background: #fafaf8; }
       if (v.dt   && d > v.dt)         return false;
       if (v.orig && r.whO !== v.orig)  return false;
       if (v.dest && r.whD !== v.dest)  return false;
-      if (v.est  && r.st  !== v.est)   return false;
+      if (v.est && v.est.length > 0 && !v.est.includes(r.st)) return false;
       if (v.timing) {
         const today = new Date().toISOString().substring(0, 10);
         const req   = r.fReq ? r.fReq.substring(0, 10) : '';
@@ -444,7 +494,9 @@ tr:hover td { background: #fafaf8; }
 
   function clearFilter() {
     ['df','dt'].forEach(id => document.getElementById(id).value = '');
-    ['f-orig','f-dest','f-est','f-timing'].forEach(id => document.getElementById(id).value = '');
+    ['f-orig','f-dest','f-timing'].forEach(id => document.getElementById(id).value = '');
+    document.querySelectorAll('#ms-dropdown input[type=checkbox]').forEach(c => c.checked = false);
+    document.getElementById('ms-trigger').textContent = 'Todos';
     fil = [...RAW].sort((a, b) => b.fMR.localeCompare(a.fMR));
     renderChips({});
     render();
