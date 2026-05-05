@@ -282,10 +282,13 @@ tr:hover td { background: #fafaf8; }
 
 <script>
   // ─────────────────────────────────────────────────────
-  // URL del CSV en GitHub — se actualiza automáticamente
-  // cuando subes un nuevo CSV al repositorio
+  // CONFIGURACIÓN DE CONEXIÓN A ZECORE / ERPNEXT
+  // Reemplaza los valores marcados con tus credenciales
   // ─────────────────────────────────────────────────────
-  const CSV_URL = 'https://raw.githubusercontent.com/arturogarcia-Puntos/Interwarehouse-dashboard/main/InterWarehouse%20Report.csv';
+  const ZECORE_URL = 'https://zecore.zebrands.mx';
+  const API_KEY    = '562c86cda270846';
+  const API_SECRET = '91f392bc01071e7';
+  const REPORT_NAME = 'InterWarehouse Report';
 
   let RAW = [];
   let fil = [];
@@ -564,19 +567,63 @@ tr:hover td { background: #fafaf8; }
       </tr>`).join('');
   }
 
-  // ── Cargar CSV desde GitHub automáticamente ──
-  fetch(CSV_URL)
-    .then(res => {
-      if (!res.ok) throw new Error('No se encontró el archivo');
-      return res.text();
+  // ── Cargar datos desde ZeCore / ERPNext automáticamente ──
+  function fetchFromZeCore() {
+    const today    = new Date().toISOString().substring(0, 10);
+    const fromDate = '2026-04-21';
+    const filters  = JSON.stringify({ from_date: fromDate, to_date: today });
+    const url      = ZECORE_URL + '/api/method/frappe.desk.query_report.run?report_name=' + encodeURIComponent(REPORT_NAME) + '&filters=' + encodeURIComponent(filters);
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'token ' + API_KEY + ':' + API_SECRET,
+        'Content-Type': 'application/json',
+      }
     })
-    .then(text => {
-      const rows = parseCSV(text);
-      loadRows(rows);
+    .then(function(res) {
+      if (!res.ok) throw new Error('Error ' + res.status);
+      return res.json();
     })
-    .catch(() => {
-      showError('No se encontró <strong>InterWarehouse Report.csv</strong> en el repositorio.<br>Verifica que el archivo esté subido a GitHub con el nombre correcto.');
+    .then(function(data) {
+      const result  = data.message;
+      const columns = result.columns.map(function(c){ return typeof c === 'object' ? c.fieldname : c; });
+      const rows    = (result.result || []).map(function(r) {
+        const obj = {};
+        columns.forEach(function(col, i){ obj[col] = r[i] !== undefined ? r[i] : ''; });
+        return obj;
+      });
+      const mapped = rows.map(function(r) {
+        return {
+          'Material Request'        : r['material_request']       || r['Material Request']        || '',
+          'Shipping Core'           : r['shipping_core']          || r['Shipping Core']           || '',
+          'Arrangement'             : r['arrangement']            || r['Arrangement']             || '',
+          'Warehouse Origen'        : r['warehouse_origen']       || r['Warehouse Origen']        || '',
+          'Warehouse Destino'       : r['warehouse_destino']      || r['Warehouse Destino']       || '',
+          'Total Transfer Job'      : r['total_transfer_job']     || r['Total Transfer Job']      || '',
+          'Transfer Job Cerradas'   : r['transfer_job_cerradas']  || r['Transfer Job Cerradas']   || '',
+          'Transfer Job Pendientes' : r['transfer_job_pendientes']|| r['Transfer Job Pendientes'] || '',
+          'Qty total'               : r['qty_total']              || r['Qty total']               || '',
+          'Items en Delivered'      : r['items_en_delivered']     || r['Items en Delivered']      || '',
+          'Avance'                  : r['avance']                 || r['Avance']                  || '',
+          'Arrangement Status'      : r['arrangement_status']     || r['Arrangement Status']      || '',
+          'MR creation'             : r['mr_creation']            || r['MR creation']             || '',
+          'MR required by'          : r['mr_required_by']         || r['MR required by']          || '',
+          'Arr in progress'         : r['arr_in_progress']        || r['Arr in progress']         || '',
+          'Fecha arr done'          : r['fecha_arr_done']         || r['Fecha arr done']          || '',
+          'tiempo total MR (h)'     : r['tiempo_total_mr_h']      || r['tiempo total MR (h)']     || '',
+          'tiempo operativo (h)'    : r['tiempo_operativo_h']     || r['tiempo operativo (h)']    || '',
+        };
+      });
+      loadRows(mapped);
+    })
+    .catch(function(err) {
+      console.error(err);
+      showError('No se pudo conectar con ZeCore.<br>Verifica que tu <strong>API Key</strong> y <strong>API Secret</strong> estén correctos en el archivo.');
     });
+  }
+
+  fetchFromZeCore();
 </script>
 </body>
 </html>
